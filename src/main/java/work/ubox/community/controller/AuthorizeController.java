@@ -11,7 +11,8 @@ import work.ubox.community.mapper.UserMapper;
 import work.ubox.community.model.User;
 import work.ubox.community.provider.GithubProvider;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -35,7 +36,8 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request
+//                           HttpServletRequest request,
+                           HttpServletResponse response
                            ) {
         //对AccessToken进行成员赋值
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
@@ -52,16 +54,19 @@ public class AuthorizeController {
         if (githubUser != null) {
 
             User user = new User();
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             //将user信息持久化到数据库
             userMapper.insert(user);
+
+            response.addCookie(new Cookie("token",token));
             
             //登录成功，写cookie和session
-            request.getSession().setAttribute("githubUser", githubUser);
+//            request.getSession().setAttribute("githubUser", githubUser);
             return "redirect:/";
         }else{
             //登录失败，重新登陆
