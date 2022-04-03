@@ -5,7 +5,8 @@ create table user
     name         varchar(50),
     token        varchar(36),
     gmt_create   bigint,
-    gmt_modified bigint
+    gmt_modified bigint,
+    bio varchar(255) null,
 );
 
 

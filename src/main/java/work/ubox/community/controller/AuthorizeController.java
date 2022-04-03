@@ -51,7 +51,7 @@ public class AuthorizeController {
         //通过AccessToken获取github用户信息
         GithubUser githubUser = githubProvider.getUser(accessToken);
         //获取到githubUser之后存入数据库，并且写入session
-        if (githubUser != null) {
+        if (githubUser != null && githubUser.getId()!=null) {
 
             User user = new User();
             String token = UUID.randomUUID().toString();
