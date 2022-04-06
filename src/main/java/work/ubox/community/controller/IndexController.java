@@ -32,8 +32,8 @@ public class IndexController {
     public String index(HttpServletRequest request,
                         Model model,
                         // @RequestParam：从前端接收参数
-                        @RequestParam(name="page",defaultValue = "4") Integer page,
-                        @RequestParam(name="size",defaultValue = "5") Integer size
+                        @RequestParam(name="page",defaultValue = "1") Integer page,
+                        @RequestParam(name="size",defaultValue = "2") Integer size
                         ) {
 
             Cookie[] cookies = request.getCookies();
