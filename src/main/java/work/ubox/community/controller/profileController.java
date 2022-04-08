@@ -22,7 +22,7 @@ public class profileController {
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                          @RequestParam(name = "size", defaultValue = "8") Integer size,
+                          @RequestParam(name = "size", defaultValue = "5") Integer size,
                           @PathVariable(name = "action") String action,
                           Model model) {
 
