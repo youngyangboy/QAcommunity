@@ -1,9 +1,6 @@
 package work.ubox.community.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import work.ubox.community.model.User;
 
 @Mapper
@@ -16,4 +13,10 @@ public interface UserMapper {
 
     @Select("select * from USER where id=#{id}")
     User findById(@Param("id") Integer id);
+
+    @Select("select * from USER where account_id=#{accountId}")
+    User findByAccountId(@Param("accountId")String accountId);
+
+    @Update("update user set name=#{name},token=#{token},avatar_url=#{avatarUrl},gmt_modified=#{gmtModified} where id = #{id}")
+    void update(User user);
 }
