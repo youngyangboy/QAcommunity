@@ -12,6 +12,7 @@ import work.ubox.community.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class QuestionService {
 
@@ -28,20 +29,20 @@ public class QuestionService {
         Integer totalCount = questionMapper.count();
 
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
-        page = page<1?1:page;
-        page = page>totalPage?totalPage:page;
+        page = page < 1 ? 1 : page;
+        page = page > totalPage ? totalPage : page;
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.list(offset,size);
+        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //BeanUtils.copyProperties是Spring提供的一个拷贝对象属性的方法
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -57,22 +58,22 @@ public class QuestionService {
         Integer totalCount = questionMapper.countByUserId(userId);
 
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
-        page = page<1?1:page;
-        page = page>totalPage?totalPage:page;
+        page = page < 1 ? 1 : page;
+        page = page > totalPage ? totalPage : page;
 
         paginationDTO.setPagination(totalPage, page);
 
 
         Integer offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.listByUserId(userId,offset,size);
+        List<Question> questions = questionMapper.listByUserId(userId, offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //BeanUtils.copyProperties是Spring提供的一个拷贝对象属性的方法
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -94,5 +95,18 @@ public class QuestionService {
 
         return questionDTO;
 
+    }
+
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            //如果没有这个问题就创建新的问题
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            //否则就进行内容更改
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
     }
 }
