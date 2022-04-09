@@ -8,6 +8,7 @@ import work.ubox.community.dto.PaginationDTO;
 import work.ubox.community.dto.QuestionDTO;
 import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.exception.CustomizeException;
+import work.ubox.community.mapper.QuestionEXTMapper;
 import work.ubox.community.mapper.QuestionMapper;
 import work.ubox.community.mapper.UserMapper;
 import work.ubox.community.model.Question;
@@ -25,6 +26,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionEXTMapper questionEXTMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -137,5 +141,24 @@ public class QuestionService {
             }
 
         }
+    }
+
+    public void incView(Integer id) {
+
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionEXTMapper.incVew(question);
+
+
+        //在高并发的情况下，会出现脏读、不可重复读、幻读
+//        Question question = questionMapper.selectByPrimaryKey(id);
+//        Question updateQuestion = new Question();
+//        updateQuestion.setViewCount(question.getViewCount()+1);
+//
+//        QuestionExample questionExample = new QuestionExample();
+//        questionExample.createCriteria()
+//                .andIdEqualTo(id);
+//        questionMapper.updateByExampleSelective(updateQuestion, questionExample);
     }
 }
