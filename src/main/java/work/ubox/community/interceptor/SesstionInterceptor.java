@@ -8,6 +8,7 @@ import work.ubox.community.mapper.UserMapper;
 import work.ubox.community.model.User;
 import work.ubox.community.model.UserExample;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

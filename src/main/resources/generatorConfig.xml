@@ -33,5 +33,6 @@
         </javaClientGenerator>
         <table  tableName="user" domainObjectName="User" />
         <table  tableName="question" domainObjectName="Question" />
+        <table  tableName="comment" domainObjectName="Comment" />
     </context>
 </generatorConfiguration>

@@ -7,14 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import work.ubox.community.dto.PaginationDTO;
-import work.ubox.community.dto.QuestionDTO;
 import work.ubox.community.mapper.UserMapper;
-import work.ubox.community.model.User;
 import work.ubox.community.service.QuestionService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /***
  * 允许这个类去接收前端的

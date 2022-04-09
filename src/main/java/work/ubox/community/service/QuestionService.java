@@ -148,7 +148,7 @@ public class QuestionService {
         Question question = new Question();
         question.setId(id);
         question.setViewCount(1);
-        questionEXTMapper.incVew(question);
+        questionEXTMapper.incView(question);
 
 
         //在高并发的情况下，会出现脏读、不可重复读、幻读
