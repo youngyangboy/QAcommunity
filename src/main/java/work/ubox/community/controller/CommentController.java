@@ -7,18 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import work.ubox.community.dto.CommentDTO;
-import work.ubox.community.mapper.CommentMapper;
+import work.ubox.community.dto.ResultDTO;
 import work.ubox.community.model.Comment;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import work.ubox.community.service.CommentService;
 
 @Controller
 public class CommentController {
 
     @Autowired
-    private CommentMapper commentMapper;
+    private CommentService commentService;
 
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
@@ -32,9 +29,7 @@ public class CommentController {
         comment.setGmtModified(System.currentTimeMillis());
         comment.setCommentator(1);
         comment.setLikeCount(0L);
-        commentMapper.insert(comment);
-        Map<Object, Object> objectObjectHashMap = new HashMap<>();
-        objectObjectHashMap.put("message", "成功");
-        return objectObjectHashMap;
+        commentService.insert(comment);
+        return ResultDTO.okOf();
     }
 }
