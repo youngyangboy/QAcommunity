@@ -6,8 +6,10 @@ import work.ubox.community.enums.CommentTypeEnum;
 import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.exception.CustomizeException;
 import work.ubox.community.mapper.CommentMapper;
+import work.ubox.community.mapper.QuestionEXTMapper;
 import work.ubox.community.mapper.QuestionMapper;
 import work.ubox.community.model.Comment;
+import work.ubox.community.model.Question;
 
 @Service
 public class CommentService {
@@ -17,6 +19,9 @@ public class CommentService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionEXTMapper questionEXTMapper;
 
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId()==0) {
@@ -34,7 +39,13 @@ public class CommentService {
             commentMapper.insert(comment);
         }else{
             //回复问题
-            questionMapper.selectByPrimaryKey(comment.getParentId());
+            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+            commentMapper.insert(comment);
+            question.setCommentCount(1);
+            questionEXTMapper.incCommentCount(question);
         }
     }
 }
