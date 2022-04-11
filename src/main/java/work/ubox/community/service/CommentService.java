@@ -2,6 +2,7 @@ package work.ubox.community.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import work.ubox.community.enums.CommentTypeEnum;
 import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.exception.CustomizeException;
@@ -23,6 +24,7 @@ public class CommentService {
     @Autowired
     private QuestionEXTMapper questionEXTMapper;
 
+    @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId()==0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);

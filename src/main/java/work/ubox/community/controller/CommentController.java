@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import work.ubox.community.dto.CommentDTO;
 import work.ubox.community.dto.ResultDTO;
+import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.model.Comment;
+import work.ubox.community.model.User;
 import work.ubox.community.service.CommentService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class CommentController {
@@ -19,7 +23,12 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO) {
+    public Object post(@RequestBody CommentDTO commentDTO,
+                       HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
         Comment comment = new Comment();
         comment.setParentId(commentDTO.getParentId());
         comment.setContent(commentDTO.getContent());
