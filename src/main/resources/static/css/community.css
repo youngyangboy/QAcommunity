@@ -5,6 +5,10 @@ body{
     background-color: white;
     margin: 30px;
 }
+.background-board{
+    background-color: white;
+    height: 600px
+}
 .btn-publish{
     float: right;
     margin-bottom: 15px;
@@ -36,4 +40,25 @@ body{
 .btm-comment{
     float: right;
     margin-bottom: 15px;
+}
+.comment-sp{
+    margin-top: 0;
+}
+
+.sponsor{
+    margin-top: 12px
+}
+
+.menu{
+    margin-top: 5px;
+    color: #999;
+}
+.menu .icon{
+    margin-top: 10px;
+    margin-right: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.menu .icon:hover{
+    color: #499ef3;
 }
