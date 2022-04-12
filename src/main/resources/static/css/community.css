@@ -44,7 +44,11 @@ body{
 .comment-sp{
     margin-top: 0;
 }
-
+.comments{
+    padding-bottom: 5px;
+    margin-top: 15px;
+    border-bottom: 1px solid #eee;
+}
 .sponsor{
     margin-top: 12px
 }
@@ -54,7 +58,7 @@ body{
     color: #999;
 }
 .menu .icon{
-    margin-top: 10px;
+    margin-top: 6px;
     margin-right: 20px;
     font-size: 20px;
     cursor: pointer;
@@ -62,3 +66,4 @@ body{
 .menu .icon:hover{
     color: #499ef3;
 }
+

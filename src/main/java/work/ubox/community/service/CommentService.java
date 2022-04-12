@@ -85,7 +85,7 @@ public class CommentService {
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
-            commentDTO.setUer(userMap.get(comment.getCommentator()));
+            commentDTO.setUser(userMap.get(comment.getCommentator()));
             return commentDTO;
         }).collect(Collectors.toList());
         return commentDTOS;
