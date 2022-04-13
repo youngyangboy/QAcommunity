@@ -52,7 +52,7 @@
                                      th:src="${comment.user.avatarUrl}">
                             </a>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body" th:id="${'comment-body-'+comment.id}">
                             <h5 class="media-heading" style="margin-top: 5px">
                                 <span th:text="${comment.user.name}"></span>
                             </h5>
