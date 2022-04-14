@@ -8,10 +8,7 @@ import work.ubox.community.dto.CommentDTO;
 import work.ubox.community.enums.CommentTypeEnum;
 import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.exception.CustomizeException;
-import work.ubox.community.mapper.CommentMapper;
-import work.ubox.community.mapper.QuestionEXTMapper;
-import work.ubox.community.mapper.QuestionMapper;
-import work.ubox.community.mapper.UserMapper;
+import work.ubox.community.mapper.*;
 import work.ubox.community.model.*;
 
 import java.util.ArrayList;
@@ -35,6 +32,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentEXTMapper commentEXTMapper;
+
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId()==0) {
@@ -50,6 +50,11 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加评论数
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentEXTMapper.incCommentCount(parentComment);
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
