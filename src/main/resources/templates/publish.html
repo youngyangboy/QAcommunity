@@ -42,22 +42,19 @@
                            onclick="showSelectTag()">
                     <div id="select-tag" class="publish-tag-tab">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation">
-                                <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">开发语言</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">平台框架</a>
+                            <li role="presentation" th:each="selectCategoty:${tags}">
+                                <a th:href="${'#'+selectCategoty.categoryName}" aria-controls="messages" role="tab"
+                                   data-toggle="tab"
+                                   th:text="${selectCategoty.categoryName}"></a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane" id="messages">
-                                    <span class="label label-info">
-                                        <span class="glyphicon glyphicon-tags" onclick="selectTag('Java')">Java</span>
-                                    </span>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="settings">
-                                    <span class="label label-info">
-                                        <span class="glyphicon glyphicon-tags" onclick="selectTag('Spring')">Spring</span>
+                            <div role="tabpanel" class="tab-pane active" th:id="${selectCategoty.categoryName}"
+                                 th:each="selectCategoty:${tags}">
+                                    <span class="label label-info" th:each="selectTag:${selectCategoty.tags}">
+                                        <span class="glyphicon glyphicon-tags"
+                                              onclick="selectTag(this)" th:data-tag="${selectTag}"
+                                              th:text="${selectTag}"></span>
                                     </span>
                             </div>
                         </div>
