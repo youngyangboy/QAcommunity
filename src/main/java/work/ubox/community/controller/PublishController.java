@@ -1,5 +1,6 @@
 package work.ubox.community.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,9 +74,17 @@ public class PublishController {
             return "publish";
         }
 
+        String invalid = TagCache.filterInvalid(tag);
+        if (StringUtils.isNoneBlank(invalid)) {
+            model.addAttribute("error", "输入非法标签："+invalid);
+            return "publish";
+        }
+
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+
+
 
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
@@ -88,8 +97,6 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-//        question.setGmtCreate(System.currentTimeMillis());
-//        question.setGmtModified(question.getGmtCreate());
         question.setId(id);
         questionService.createOrUpdate(question);
         return "redirect:/";
