@@ -26,6 +26,10 @@ body {
     margin-top: 25px;
 }
 
+.question-tag{
+    margin-right: 18px;
+}
+
 .text-desc {
     font-size: 12px;
     font-width: normal;
