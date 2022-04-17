@@ -52,12 +52,13 @@
                 <div class="media" th:each="notification: ${pagination.data}">
 
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <p class="media-heading">
+                            <span th:text="${notification.notifierName+'  '+notification.typeName +' '}"></span>
                             <a th:href="@{'notification/'+${notification.id}}"
-                               th:text="${notification.notifierName+'  '+notification.type +' '+notification.outerTitle}">
-
+                               th:text="${notification.outerTitle}">
                             </a>
-                        </h5>
+                            <span class="label label-danger" th:if="${notification.status==0}">未读</span>
+                        </p>
                     </div>
                 </div>
             </div>

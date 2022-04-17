@@ -1,6 +1,6 @@
 package work.ubox.community.enums;
 
-public enum NotificationStatus {
+public enum NotificationStatusEnum {
 
     UNREAD(0),
     READ(1)
@@ -12,7 +12,7 @@ public enum NotificationStatus {
         return status;
     }
 
-    NotificationStatus(int status) {
+    NotificationStatusEnum(int status) {
         this.status = status;
     }
 }
