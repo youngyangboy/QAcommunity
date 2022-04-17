@@ -24,7 +24,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/notification/{id}")
-    public String profile(HttpServletRequest request, @RequestParam(name = "id") Long id) {
+    public String profile(HttpServletRequest request, @PathVariable(name = "id") Long id) {
 
 
         User user = (User) request.getSession().getAttribute("user");
@@ -36,7 +36,7 @@ public class NotificationController {
 
         if (NotificationTypeEnum.REPLY_COMMENT.getType() == notificationDTO.getType()
                 || NotificationTypeEnum.REPLY_QUESTION.getType() == notificationDTO.getType()) {
-            return "redirect:/question/"+notificationDTO.getOuterid();
+            return "redirect:/question/" + notificationDTO.getOuterid();
         }else {
             return "redirect:/";
         }
