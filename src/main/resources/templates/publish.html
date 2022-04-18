@@ -5,9 +5,13 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
+    <link rel="stylesheet" href="/css/editormd.min.css"/>
     <script src="/js/community.js" type="application/javascript" charset="utf-8"></script>
     <script src="/js/jquery-3.4.1.min.js"></script>
-    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript" charset="utf-8"></script>
+    <script src="/js/editormd.min.js" type="application/javascript" charset="utf-8"></script>
+    <script src="/js/editormd.min.js" type="application/javascript" charset="utf-8"></script>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
@@ -28,11 +32,32 @@
                            autocomplete="off"
                            placeholder="文章标题...">
                 </div>
-                <div>
+                <div class="form-group" id="question-editor">
                     <label for="description">文章内容：</label>
-                    <textarea name="description" id="description" th:text="${description}" class="form-control"
-                              cols="30" rows="10"></textarea>
+                    <textarea name="description" id="description"
+                              th:text="${description}"
+                              style="display: none;" class="form-control"
+                              cols="30"
+                              rows="10"></textarea>
                 </div>
+
+
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("question-editor", {
+                            width: "100%",
+                            height: 450,
+                            delay: 0,
+                            placeholder: "请输入你的问题描述",
+                            watch: false,
+                            // saveHTMLToTextarea: true,
+                            path: "/js/lib/"
+
+                        });
+                    });
+                </script>
+
+
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
                     <input type="text" class="form-control"
@@ -42,7 +67,8 @@
                            onclick="showSelectTag()">
                     <div id="select-tag" class="publish-tag-tab">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" th:each="selectCategoty,selectCategoryStat:${tags}" th:class="${selectCategoryStat.first ? 'active':''}">
+                            <li role="presentation" th:each="selectCategoty,selectCategoryStat:${tags}"
+                                th:class="${selectCategoryStat.first ? 'active':''}">
                                 <a th:href="${'#'+selectCategoty.categoryName}" aria-controls="messages" role="tab"
                                    data-toggle="tab"
                                    th:text="${selectCategoty.categoryName}"></a>

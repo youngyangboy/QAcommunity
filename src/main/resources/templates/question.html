@@ -4,11 +4,16 @@
     <title th:text="${question.title}"></title>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet"/>
-    <link href="/css/community.css" rel="stylesheet" charset="utf-8"/>
-    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link href="/css/community.css" rel="stylesheet"/>
+    <link href="/css/editormd.preview.min.css" rel="stylesheet"/>
+
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
-    <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/community.js"></script>
+    <script src="/js/editormd.min.js"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 </head>
 <body>
@@ -31,11 +36,22 @@
                 </span>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--内容-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${question.description}"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+                    <textarea style="display: none;" th:text="${question.description}"></textarea>
+                </div>
+
+                <script type="text/javascript">
+                    $(function () {
+                        editormd.markdownToHTML("question-view", {});
+                    });
+                </script>
+
+
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--标签-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <span class="label label-info  question-tag" style="margin-right: 10px" th:each="tag:${question.tag.split(',')}">
+                    <span class="label label-info  question-tag" style="margin-right: 10px"
+                          th:each="tag:${question.tag.split(',')}">
                         <span class="glyphicon glyphicon-tags"></span>
                         <span class="label label-info" th:text="${tag}"></span>
                     </span>
