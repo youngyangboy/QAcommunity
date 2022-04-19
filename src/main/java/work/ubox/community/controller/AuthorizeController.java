@@ -1,5 +1,6 @@
 package work.ubox.community.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -39,7 +41,7 @@ public class AuthorizeController {
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletResponse response
-                           ) {
+    ) {
         //对AccessToken进行成员赋值
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
@@ -52,7 +54,7 @@ public class AuthorizeController {
         //通过AccessToken获取github用户信息
         GithubUser githubUser = githubProvider.getUser(accessToken);
         //获取到githubUser之后存入数据库，并且写入session
-        if (githubUser != null && githubUser.getId()!=null) {
+        if (githubUser != null && githubUser.getId() != null) {
 
             User user = new User();
             String token = UUID.randomUUID().toString();
@@ -63,13 +65,14 @@ public class AuthorizeController {
             //将user信息持久化到数据库
             userService.createOrUpdate(user);
 
-            response.addCookie(new Cookie("token",token));
-            
+            response.addCookie(new Cookie("token", token));
+
             //登录成功，写cookie和session
 //            request.getSession().setAttribute("githubUser", githubUser);
             return "redirect:/";
-        }else{
+        } else {
             //登录失败，重新登陆
+            log.error("callback get github error!,{}", githubUser);
             System.out.println("登录失败！");
             return "redirect:/";
         }
