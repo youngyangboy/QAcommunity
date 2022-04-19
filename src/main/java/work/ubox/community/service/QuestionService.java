@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import work.ubox.community.dto.PaginationDTO;
 import work.ubox.community.dto.QuestionDTO;
+import work.ubox.community.dto.QuestionQueryDTO;
 import work.ubox.community.exception.CustomizeErrorCode;
 import work.ubox.community.exception.CustomizeException;
 import work.ubox.community.mapper.QuestionEXTMapper;
@@ -33,11 +34,18 @@ public class QuestionService {
     @Autowired
     private QuestionEXTMapper questionEXTMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, ' ');
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
 
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        Integer totalCount = questionEXTMapper.countBySearch(questionQueryDTO);
 
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
         page = page < 1 ? 1 : page;
@@ -48,8 +56,11 @@ public class QuestionService {
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.
-                selectByExampleWithRowbounds(questionExample,new RowBounds(offset, size));
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        questionQueryDTO.setSearch(search);
+        List<Question> questions = questionEXTMapper.
+                selectBySearch(questionQueryDTO);
 //        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -72,7 +83,7 @@ public class QuestionService {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
                 .andCreatorEqualTo(userId);
-        Integer totalCount = (int)questionMapper.countByExample(questionExample);
+        Integer totalCount = (int) questionMapper.countByExample(questionExample);
 //        Integer totalCount = questionMapper.countByUserId(userId);
         totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;
         page = page < 1 ? 1 : page;
@@ -184,7 +195,7 @@ public class QuestionService {
 
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO);
+            BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
         return questionDTOS;
