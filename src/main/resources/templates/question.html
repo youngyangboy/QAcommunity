@@ -40,7 +40,7 @@
                     <textarea style="display: none;" th:text="${question.description}"></textarea>
                 </div>
 
-<!--                //markdown支持-->
+                <!--markdown支持-->
                 <script type="text/javascript">
                     $(function () {
                         editormd.markdownToHTML("question-view", {});
@@ -125,12 +125,12 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-circle"
-                                     th:src="${question.user.avatarUrl}">
+                                     th:src="${session.user!=null? session.user.avatarUrl:'/images/default-avatar.png'}">
                             </a>
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading" style="margin-top: 12px">
-                                <span th:text="${question.user.name}"></span>
+                                <span th:text="${session.user!=null?session.user.name:'匿名用户'}"></span>
                             </h5>
                         </div>
                     </div>
